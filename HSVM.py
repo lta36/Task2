@@ -14,6 +14,7 @@ import numpy as np
 best = -1
 global_para = {}
 
+# For bigrams, I just change the file name to be bitrain923.csv, bitest923.csv, bidev923.csv
 train = pd.read_csv("train923.csv",encoding = 'unicode_escape')
 ytrain = train['__label']
 dev = pd.read_csv("dev923.csv",encoding = 'unicode_escape')
@@ -22,7 +23,7 @@ test = pd.read_csv("test923.csv",encoding = 'unicode_escape')
 ytest = test['__label']
 
 
-
+# drop the label column and the index column
 xtrain = train.drop(['1','0'],axis = 1)
 xtest = test.drop(['1','0'],axis = 1)
 xdev = dev.drop(['1','0'],axis = 1)
@@ -54,18 +55,15 @@ def f(params):
     return {'loss': -acc, 'status': STATUS_OK}
 
 trials = Trials()
-best = fmin(f, space4rf, algo=tpe.suggest, max_evals=10000, trials=trials)
-print("2")
+best = fmin(f, space4rf, algo=tpe.suggest, max_evals=1000, trials=trials)
 print("----------selection----------")
 print(global_para['kernel'],global_para["degree"],global_para["C"],global_para["coef0"],global_para["gamma"])
 
 
 rfc = SVC(kernel=global_para['kernel'], degree=global_para["degree"], C=global_para["C"], coef0=global_para["coef0"], gamma=global_para["gamma"])
-print("3")
 clf = rfc.fit(xtrain,ytrain)
 print("train_score =",clf.score(xtrain,ytrain))
 score_d = clf.score(xdev,ydev)
-print("4")
 print("dev_score =",score_d)
 score_c = clf.score(xtest,ytest)
 print("test_score =",score_c)

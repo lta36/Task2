@@ -10,6 +10,7 @@ import numpy as np
 best = -1
 global_para = {}
 
+# For bigrams, I just change the file name to be bitrain923.csv, bitest923.csv, bidev923.csv
 train = pd.read_csv("train923.csv",encoding = 'unicode_escape')
 ytrain = train['__label']
 dev = pd.read_csv("dev923.csv",encoding = 'unicode_escape')
@@ -18,7 +19,7 @@ test = pd.read_csv("test923.csv",encoding = 'unicode_escape')
 ytest = test['__label']
 
 
-
+# drop the label column and the index column
 xtrain = train.drop(['1','0'],axis = 1)
 xtest = test.drop(['1','0'],axis = 1)
 xdev = dev.drop(['1','0'],axis = 1)
@@ -50,14 +51,7 @@ best = fmin(f, space4rf, algo=tpe.suggest, max_evals=100, trials=trials)
 print("----------selection----------")
 print(global_para['criterion'],global_para["max_depth"],global_para["n_estimators"])
 
-parameters= {"criterion":global_para['criterion']
-                ,"max_depth": global_para["max_depth"]
-            #  ,"min_samples_leaf":[*range(1,50,5)]
-            #  ,"min_impurity_decrease":[*np.linspace(0,0.5,20)]
-             ,"n_estimators":global_para["n_estimators"]
-            }
 rfc = RandomForestClassifier(random_state = 151,criterion = global_para['criterion'],max_depth = global_para["max_depth"], n_estimators = global_para["n_estimators"])
-print("3")
 clf = rfc.fit(xtrain,ytrain)
 print("train_score =",clf.score(xtrain,ytrain))
 score_d = clf.score(xdev,ydev)
