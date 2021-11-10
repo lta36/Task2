@@ -33,8 +33,8 @@ print(xdev.head())
 print("1")
 def hyperopt_train_test(params):
     # print(params)
-    clf = CategoricalNB(**params)
-    return cross_val_score(clf, xtrain, ytrain).mean()
+    clf = CategoricalNB(**params).fit(xtrain,ytrain)
+    return clf.score(xdev,ydev)
 
 space4rf = {
     'alpha': hp.choice('alpha', range(0,1)),

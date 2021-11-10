@@ -25,8 +25,8 @@ xtest = test.drop(columns = ['__label','Unnamed: 0'],axis = 1)
 xdev = dev.drop(columns = ['__label','Unnamed: 0'],axis = 1)
 
 def hyperopt_train_test(params):
-    clf = RandomForestClassifier(**params)
-    return cross_val_score(clf, xtrain, ytrain).mean()
+    clf = RandomForestClassifier(**params).fit(xtrain,ytrain)
+    return clf.score(xdev,ydev)
 
 space4rf = {
     'max_depth': hp.choice('max_depth', range(1,50000)),

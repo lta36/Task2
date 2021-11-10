@@ -31,8 +31,8 @@ print(xdev.head())
 print("1")
 def hyperopt_train_test(params):
     # print(params)
-    clf =LinearSVC(**params)
-    return cross_val_score(clf, xtrain, ytrain).mean()
+    clf =LinearSVC(**params).fit(xtrain,ytrain)
+    return clf.score(xdev,ydev)
 
 space4rf = {
 	'dual':hp.choice('dual',[False]),

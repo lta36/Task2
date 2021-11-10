@@ -32,8 +32,8 @@ print(xdev.head())
 print("1")
 def hyperopt_train_test(params):
     # print(params)
-    clf = SVC(**params)
-    return cross_val_score(clf, xtrain, ytrain).mean()
+    clf = SVC(**params).fit(xtrain,ytrain)
+    return clf.score(xdev,ydev)
 
 space4rf = {
     'kernel': hp.choice('kernel', ['linear', 'poly', 'rbf', 'sigmoid']),
